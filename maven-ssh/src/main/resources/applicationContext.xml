@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd"
+       default-autowire="byName">
+    <context:property-placeholder location="classpath*:jdbc-config.properties"/>
+    <context:component-scan base-package="com.ssh.dao"/>
+    <context:component-scan base-package="com.ssh.service"/>
+    <context:component-scan base-package="com.ssh.action"/>
+    <!-- 配置系统的数据源 -->
+    <bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">
+        <property value="${jdbc.driver}" name="driverClassName"></property>
+        <property value="${jdbc.url}" name="url"></property>
+        <property value="${jdbc.username}" name="username"/>
+        <property value="${jdbc.password}" name="password"/>
+    </bean>
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+        <property name="packagesToScan" value="com.ssh.model"/>
+    </bean>
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <tx:annotation-driven proxy-target-class="false" transaction-manager="transactionManager"/>
+</beans>

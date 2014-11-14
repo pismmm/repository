@@ -1,0 +1,37 @@
+body{
+    font-size: 12px;
+}
+#tabs {
+    margin-top: 0em;
+}
+
+#tabs li .ui-icon-close {
+    float: left;
+    margin: 0.4em 0.2em 0 0;
+    cursor: pointer;
+}
+
+#add_tab {
+    cursor: pointer;
+}
+
+.ui-menu {
+    position: absolute;
+    width: 100px;
+}
+
+div#maincontent p {
+    line-height: 150%;
+    margin: 12px 0 0;
+}
+
+#rotate1, #rotatey1 {
+    background: none repeat scroll 0 0 red;
+    border: 1px solid #000000;
+    margin: 10px;
+    opacity: 0.7;
+}
+
+/*
+    selectMenu
+*/
